@@ -9,7 +9,8 @@ var db = new sqlite3.Database('scrumtastic.sqlite3', function(err) {
   if(err) console.error(err);
 });
 
-var router = new (require('./lib/route').Router);
+var router = new (require('./lib/route')).Router(db);
+router.resource('/projects', require('./src/resource/project'));
 
 router.get('/', function(req, res) {
   fs.readFile('public/index.html', function(err, body){
@@ -23,13 +24,6 @@ router.get('/app.js', function(req, res) {
   });
 });
 
-router.get('/projects', function(req, res) {
-  db.all('SELECT * FROM projects', [], function(err, projects){
-    res.setHeader('Content-Type', 'text/json');
-    res.end(JSON.stringify(projects));
-  });
-});
-
 var migrate = require('./lib/migrate');
 migrate(db, 'migrations', function(err){
 
@@ -39,6 +33,4 @@ migrate(db, 'migrations', function(err){
   server.listen(PORT, function(){
     console.log("listening on port " + PORT);
   });
-
-
 });

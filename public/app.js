@@ -7,7 +7,14 @@ xhr.onreadystatechange = function() {
   var OK = 200; // status 200 is a successful return.
   if (xhr.readyState === DONE) {
     if (xhr.status === OK) {
-      console.log(xhr.responseText); // 'This is the returned text.'
+      console.log(xhr.responseText);
+      /*var projects = JSON.parse(xhr.responseText); // 'This is the returned text.'
+      projects.forEach(function(project){
+        var name = document.crateElement('a');
+        name.innerHTML = project.name;
+        name.href = "/projects/" + project.id;
+        document.body.appendChild(name);
+      })*/
     } else {
       console.log('Error: ' + xhr.status); // An error occurred during the request.
     }
